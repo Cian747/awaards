@@ -16,9 +16,9 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        self.title
+        return self.title
 
-    def save_projects(self):
+    def save_project(self):
         self.save()
 
     def delete_project(self):
@@ -31,6 +31,12 @@ class Project(models.Model):
     def search_by_title(cls,search_term):
         return cls.objects.filter(title__icontains = search_term)
 
+    @classmethod
+    def update_project(cls, id,title):
+        return cls.objects.filter(id = id).update(title=title)
+
+
+
     class Meta:
         ordering = ['-created_at']
 
@@ -39,6 +45,8 @@ class Profile(models.Model):
     bio = models.TextField(default="Hi I'm new here")
     project = models.ForeignKey(Project,on_delete=models.DO_NOTHING)
     profile_photo = CloudinaryField('images/',blank=True,null=True)
+    gender = models.CharField(max_length=20)
+    contact = models.CharField(max_length = 10,blank=True)
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -64,18 +72,23 @@ class Profile(models.Model):
     def search_by_user(cls,search_term):
         return cls.objects.filter(user__username__icontains = search_term)
 
+    @classmethod
+    def update_profile(cls, id,bio):
+        return cls.objects.filter(id = id).update(bio=bio)
+
+
 
 class Rate(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    design = models.IntegerField(MinValueValidator[1],MaxValueValidator[10])
-    usability = models.IntegerField(MinValueValidator[1],MaxValueValidator[10])
-    content = models.IntegerField(MinValueValidator[1],MaxValueValidator[10])
+    design = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    usability = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    content = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])    
     reviewed_project = models.ForeignKey(Project,on_delete=models.CASCADE)
 
     def save_rate(self):
         self.save()
     
-    def delete_rates(self):
+    def delete_rate(self):
         self.delete()
 
     def get_absolute_url(self):
