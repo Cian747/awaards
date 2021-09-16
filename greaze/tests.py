@@ -2,7 +2,6 @@ from django.test import TestCase
 from .models import *
 
 # Create your tests here.
-
 class GreazeTestClass(TestCase):
 
     def setUp(self):
@@ -82,10 +81,19 @@ class GreazeTestClass(TestCase):
         updated_profile = Project.objects.get(id = project)
         self.assertEqual(updated_profile.title,'tomorrow')
 
+    def test_update_review(self):
+        self.rate_review.save_rate()
+        review = Rate.objects.last().id
+        Rate.update_review(review,2)
+        updated_review = Rate.objects.get(id = review)
+        self.assertEqual(updated_review.design,2)
+
     def test_search_by_title(self):
+        self.new_project.save_project()
         projects = Project.search_by_title('today')
-        # self.assertTrue(len(project)== 1)
-        self.assertEqual(projects.title, 'today')
+        self.assertTrue(len(projects)== 1)
+
+    
 
 
     
