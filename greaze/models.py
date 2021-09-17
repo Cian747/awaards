@@ -9,7 +9,7 @@ from django.core.validators import MaxValueValidator,MinValueValidator
 
 class Project(models.Model):
     title = models.CharField(max_length=50)
-    image = CloudinaryField('images/')
+    image = CloudinaryField('images')
     description = models.TextField()
     link = models.URLField()
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -25,7 +25,7 @@ class Project(models.Model):
         self.delete()
 
     def get_absolute_url(self):
-        return reverse('profile',args=(str(self.id)))
+        return reverse('home')
 
     @classmethod
     def search_by_title(cls,search_term):
@@ -36,14 +36,13 @@ class Project(models.Model):
         return cls.objects.filter(id = id).update(title=title)
 
 
-
     class Meta:
         ordering = ['-created_at']
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(default="Hi I'm new here")
-    project = models.ForeignKey(Project,on_delete=models.DO_NOTHING)
+    project = models.ForeignKey(Project,on_delete=models.DO_NOTHING,null=True,blank=True)
     profile_photo = CloudinaryField('images/',blank=True,null=True)
     gender = models.CharField(max_length=20)
     contact = models.CharField(max_length = 10,blank=True)
@@ -93,6 +92,10 @@ class Rate(models.Model):
 
     def get_absolute_url(self):
         return reverse('review',args=(str(self.id)))
+
+    @classmethod
+    def update_review(cls, id,design):
+        return cls.objects.filter(id = id).update(design=design)
 
     
 
