@@ -15,6 +15,10 @@ import os
 from decouple import config,Csv
 import django_on_heroku
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,6 +39,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# GIT_API_TOKEN=config("GIT_API_TOKEN")
 
 # Application definition
 
@@ -45,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
+    # 'rest_framework',
+    # 'rest_framework.authtoken',
     'greaze',
 
 ]
@@ -139,11 +144,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',
+#     )
+# }
 
 
 # Internationalization
@@ -165,7 +170,11 @@ EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-
+cloudinary.config( 
+  cloud_name = "kenya12254", 
+  api_key = "396238949596112", 
+  api_secret = "FLfqPbw73_Nj6vSCFhMXMtbyhiY" 
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
