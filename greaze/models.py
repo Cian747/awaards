@@ -43,7 +43,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(default="Hi I'm new here")
     project = models.ForeignKey(Project,on_delete=models.DO_NOTHING,null=True,blank=True)
-    profile_photo = CloudinaryField('images/',blank=True,null=True)
+    profile_photo = CloudinaryField('images',blank=True,null=True)
     gender = models.CharField(max_length=20)
     contact = models.CharField(max_length = 10,blank=True)
     updated = models.DateTimeField(auto_now=True)
@@ -76,12 +76,51 @@ class Profile(models.Model):
         return cls.objects.filter(id = id).update(bio=bio)
 
 
+DESIGN_CHOICES = [
+    (1, '1 - Trash'),
+    (2, '2 - Horrible'),
+    (3, '3 - Terrible'),
+    (4, '4 - Bad'),
+    (5, '5 - Ok'),
+    (6, '6 - Watchable'),
+    (7, '7 - Good'),
+    (8, '8 - Very Good'),
+    (9, '9 - Perfect'),
+    (10, '10 - Master Piece')
+    
+]
+USABILITY_CHOICES = [
+    (1, '1 - Trash'),
+    (2, '2 - Horrible'),
+    (3, '3 - Terrible'),
+    (4, '4 - Bad'),
+    (5, '5 - Ok'),
+    (6, '6 - Watchable'),
+    (7, '7 - Good'),
+    (8, '8 - Very Good'),
+    (9, '9 - Perfect'),
+    (10, '10 - Master Piece')
+    
+]
+CONTENT_CHOICES = [
+    (1, '1 - Trash'),
+    (2, '2 - Horrible'),
+    (3, '3 - Terrible'),
+    (4, '4 - Bad'),
+    (5, '5 - Ok'),
+    (6, '6 - Watchable'),
+    (7, '7 - Good'),
+    (8, '8 - Very Good'),
+    (9, '9 - Perfect'),
+    (10, '10 - Master Piece')
+    
+]
 
 class Rate(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    design = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
-    usability = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
-    content = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])    
+    design = models.PositiveSmallIntegerField(default = 0,choices=DESIGN_CHOICES)
+    usability = models.IntegerField(default = 0,choices=USABILITY_CHOICES)
+    content = models.IntegerField(default = 0,choices=CONTENT_CHOICES)
     reviewed_project = models.ForeignKey(Project,on_delete=models.CASCADE)
 
     def save_rate(self):
@@ -97,5 +136,10 @@ class Rate(models.Model):
     def update_review(cls, id,design):
         return cls.objects.filter(id = id).update(design=design)
 
+    def __str__(self):
+        return self.user.username
+
     
 
+# gender_choice = (1, "Male"),(2,"Female")
+# gender =models.TextField(blank=True, choices=gender_choice)

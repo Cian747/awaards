@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project,Rate,Profile
+from .models import Project,Rate,Profile,DESIGN_CHOICES,USABILITY_CHOICES,CONTENT_CHOICES
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -20,36 +20,43 @@ class GreazeRegistrationForm(UserCreationForm):
 class PostProjectForm(forms.ModelForm):
         class Meta:
             model = Project
-            fields = ['title','image','description','link','user']
+            fields = ['title','image','description','link']
 
         widgets = {
             'title':forms.TextInput(attrs={'class':'form-control','placeholder':'Project Title...'}),
             'image':forms.TextInput(attrs= {'class':'form-control ','placeholder':'In a word...','label':'Put a name'}),
-            'description':forms.Textarea(attrs = {'class':'form-control','placeholder':"Caption",'label':"Caption"}),
+            'description':forms.Textarea(attrs = {'class':'form-control','placeholder':"Write here..",'label':"Caption"}),
             'link':forms.URLInput(attrs={'class':'form-control'}),
-            'user': forms.TextInput(attrs = {'class': 'form-control','id': 'user', 'value': '{{ user.pk }}', 'type': 'hidden'}),
         }
 
-# class RateForm(forms.ModelForm):
-#     class Meta:
-#         model = Rate
-#         fields = ['design','usability','content']
+class RateForm(forms.ModelForm):
 
-#         widgets = {
-#             'design': forms.SelectMultiple(attrs={'class':'form-control','name':'design'}),
-#             'usability': forms.SelectMultiple(attrs={'class':'form-control','placeholder':'Input value','name':'usability'}),
-#             'content': forms.SelectMultiple(attrs={'class':'form-control','name':'content'}),
-#         }
+    design = forms.ChoiceField(choices=DESIGN_CHOICES,widget=forms.Select(),required=True)
+    usability = forms.ChoiceField(choices=USABILITY_CHOICES,widget=forms.Select(),required=True)
+    content = forms.ChoiceField(choices=CONTENT_CHOICES,widget=forms.Select(),required=True)
+    class Meta:
+        model = Rate
+        fields = ['design','usability','content']
 
-# class EditForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ['profile_photo','bio']
+        # widgets = {
+        #     'design': forms.SelectMultiple(attrs={'class':'form-control','name':'design'}),
+        #     'usability': forms.SelectMultiple(attrs={'class':'form-control','placeholder':'Input value','name':'usability'}),
+        #     'content': forms.SelectMultiple(attrs={'class':'form-control','name':'content'}),
+        # }
 
-#         widgets = {
-#             'profile_photo':forms.FileInput(attrs={'class':'form-control'}),
-#             'bio':forms.Textarea(attrs={'class':'form-control names','placeholder':'Write here...','label':'Put a name'}),
-#         }
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['profile_photo','bio','gender','contact']
+
+        widgets = {
+            'profile_photo':forms.FileInput(attrs={'class':'form-control'}),
+            'bio':forms.Textarea(attrs={'class':'form-control ','placeholder':'Write here...','label':'Put a name'}),
+        }
+
+
+
+
 
 class UpdateProjectForm(forms.ModelForm):
         class Meta:
