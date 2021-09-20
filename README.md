@@ -1,8 +1,8 @@
-# INSTACLONE
-#### A clone of the famous instagram app, 2021
+# GREAZE
+#### Allows software developers to store and rate there apps, 2021
 #### By **CIAN**
 ## Description
-With the ability to follow,view and like posts from other users. You get to have a similar experience to using the actual instagram app. 
+Be the first to post,edit,update and rate projects of other users. 
 ## Setup/Installation Requirements
 * git clone the repo to your local desktop
 ```
