@@ -130,19 +130,15 @@ def project_details(request,id):
     current_project = Project.objects.get(id=id)
     user = request.user
     user_rating = Rate.objects.filter(reviewed_project = id).all()
-    # print(user_rating)
 
     design = Rate.objects.filter(reviewed_project=id).values_list('design',flat=True)
     usability = Rate.objects.filter(reviewed_project=id).values_list('usability',flat=True)
     content = Rate.objects.filter(reviewed_project=id).values_list('content',flat=True)
-    # print(design)
+
     if len(design)>0 and len(usability)>0 and len(content)>0:
         average_design = round(statistics.mean(design),1)
-        print(average_design)
         average_usability = round(statistics.mean(usability),1)
-        print(average_usability)
         average_content = round(statistics.mean(content),1)
-        print(average_content)
 
     else:
         average_design = 0
@@ -160,9 +156,7 @@ def project_details(request,id):
             rate.save()
 
             return redirect(request.META.get('HTTP_REFERER'))
-            # return redirect(request.)
 
-# Add rating on the page for each
 
         else:
             form = RateForm()
